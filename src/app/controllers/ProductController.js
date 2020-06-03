@@ -6,7 +6,7 @@ const File = require('../models/File')
 
 module.exports = {
     async create(req, res) {
-        // pegar categorias para disponibilizar no front
+        // get categories - available on the front
         try {
             let results = await Category.all()
             let categories = results.rows
@@ -17,7 +17,7 @@ module.exports = {
         }
     },
     async post(req, res) {
-        // logica de salvar produto
+        // product save logic
         const keys = Object.keys(req.body)
         for (const key of keys) {
             if(req.body[key] == '') {
@@ -25,7 +25,7 @@ module.exports = {
             }
         }
 
-        // files referente a fotos
+        // files - referring to photos
         if(req.files.length == 0) {
             return res.send('Please, send at least one image')
         }
@@ -33,12 +33,10 @@ module.exports = {
         let results = await Product.create(req.body)
         const productId = results.rows[0].id
         
-        // criando array de promessas 
+        // creating array of promises
         const filesPromise = req.files.map(file => File.create({...file, product_id: productId }))
 
-        // await Promise.all - aguarda todas estiverem resolvidas
         await Promise.all(filesPromise)
-
         return res.redirect(`products/${productId}`)
     },
     async edit(req, res) {
@@ -60,7 +58,7 @@ module.exports = {
         results = await Product.files(product.id)
         let files = results.rows
 
-        // criando o (url) correto para as images [array de images]
+        // creating the correct (url) for images [array of images]
         files = files.map(file => ({
             ...file,
             src: `${req.protocol}://${req.headers.host}${file.path.replace('public', '')}`
@@ -86,7 +84,7 @@ module.exports = {
             await Promise.all(newFilesPromise)
         }
 
-        // removendo fotos do banco de dados, momento da edição
+        // removing photos from the database, time of editing
         if(req.body.removed_files) {
             const removedFiles = req.body.removed_files.split(',')
             const lastIndex = removedFiles.length - 1
@@ -96,7 +94,6 @@ module.exports = {
 
             await Promise.all(removedFilesPromise)
         }
-
 
         req.body.price = req.body.price.replace(/\D/g, "")
 

@@ -1,6 +1,6 @@
 const db = require('../../config/db')
 
-// all() já retorna uma new Promise por padrão
+// all() - returns promise by default
 module.exports = {
     all() {
         return db.query(`

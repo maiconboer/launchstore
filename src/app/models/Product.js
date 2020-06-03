@@ -46,7 +46,6 @@ module.exports = {
                 status=($8)
             WHERE id = $9
         `
-
         const values = [
             data.category_id,
             data.user_id,

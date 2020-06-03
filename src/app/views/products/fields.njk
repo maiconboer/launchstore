@@ -31,7 +31,7 @@
         <textarea name="description">{{ product.description }}</textarea>
     </div>
 </div>
-{# FOTOS DOS PRODUTOS #}
+{# PRODUCT PHOTOS #}
 <div class="item">
     <div>Fotos do produto</div>
     <div>
@@ -44,7 +44,6 @@
             accept="image/*"
             onchange="PhotosUpload.handleFileInput(event)"> 
             <p>Selecione até 6 Fotos</p>
-            {# accept="image/*"  aceita apenas imagens, todo tipo #}
         </div>    
         <div id="photos-preview">
             {% if files %}
@@ -62,7 +61,7 @@
         </div>
     </div>
 </div>
-{# FIM DOS PRODUTOS #}
+
 <div class="item">
     <div>Valor</div>
     <div>
@@ -93,8 +92,7 @@
     </div>
 </div>
 
-{# com este if, o product.status só aparece no momento da edição
-ou seja, quando o mesmo é cadastrado, não aparece #}
+{# display div available only in product edition #}
 {% if (product.status == '1') or (product.status == '0') %}
     <div class="item">
         <div>Disponível ?</div>
@@ -109,7 +107,6 @@ ou seja, quando o mesmo é cadastrado, não aparece #}
                         {% if product.status == "1" %} 
                             checked="checked" 
                         {% endif %}> Sim
-                
                 </span>
             </label>
 

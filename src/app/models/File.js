@@ -10,8 +10,7 @@ module.exports = {
                 product_id
             ) VALUES ($1, $2, $3)
             RETURNING id
-            `
-            
+            `      
             const values = [
                 filename,
                 path,
@@ -22,14 +21,14 @@ module.exports = {
     },
     async delete(id) {
 
-        // deletando da pasta images
+        // deleting from images folder
         try {
         const result =await db.query(`SELECT * FROM files WHERE id = $1`, [id])
 
         const file = result.rows[0]     
         fs.unlinkSync(file.path)
 
-        // deletando images do banco
+        // deleting images from the BD
         return db.query( `
             DELETE FROM files WHERE id = $1`, [id])
 

@@ -15,7 +15,6 @@ const fileFilter = (req, file, callback) => {
     if(isAccepted) {
         return callback(null, true)
     }
-
     return callback(null, false)
 }
 

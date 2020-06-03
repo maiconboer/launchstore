@@ -1,6 +1,3 @@
-// criando máscara para real
-// nos inputs html, temos a chamada da função 
-// onkeydown="Mask.apply(this, 'formatBRL')
 
 const Mask = {
     apply(input, func) {
@@ -18,7 +15,7 @@ const Mask = {
     }
 }
 
-// GERENCIADOR DE IMAGENS PARA UPLOAD - limitando a 6 fotos
+// image manager - upload
 const PhotosUpload = {
     input: '',
     preview: document.querySelector('#photos-preview'),
@@ -38,15 +35,13 @@ const PhotosUpload = {
             const reader = new FileReader()
 
             reader.onload = () => {
-                const image = new Image() // >>>> <img />
+                const image = new Image() 
                 image.src = String(reader.result)
 
                 const div = PhotosUpload.getContainer(image)
                 PhotosUpload.preview.appendChild(div)
             }
 
-            // no momento em que esta function estiver encerrada
-            // o reader.onload é executado
             reader.readAsDataURL(file)
         })
 
@@ -54,18 +49,15 @@ const PhotosUpload = {
     },
 
     hasLimit(event) {
-        // o limite são 6 imagens
         const { uploadLimit, input, preview } = PhotosUpload
         const { files: fileList } = input
 
-        // limitação para quando seleciona mais de 6 imgs de uma vez
         if(fileList.length > uploadLimit) {
             alert(`Envie no máximo ${uploadLimit} fotos`)
             event.preventDefault()
             return true
         }
 
-        // limitação para quando add imgs e depois e add mais
         const photosDiv = []
         preview.childNodes.forEach(item => {
             if(item.classList && item.classList.value == 'photo') {
@@ -84,7 +76,7 @@ const PhotosUpload = {
     },
 
     getAllFiles() {
-        // ClipboardEvent('') é para o mozilla
+        // ClipboardEvent - for mozilla
         const dataTransfer = new ClipboardEvent('').clipboardData || new DataTransfer()
 
         PhotosUpload.files.forEach(file => dataTransfer.items.add(file))
@@ -108,9 +100,9 @@ const PhotosUpload = {
         button.innerHTML = 'close'
         return button
     },
-    // remove no front - momento da criação do produto
+    // remove on the front - moment of the post
     removePhoto(event) {
-        const photoDiv = event.target.parentNode // <div class="photo>"
+        const photoDiv = event.target.parentNode 
         const photosArray = Array.from(PhotosUpload.preview.children)
 
         const index = photosArray.indexOf(photoDiv)
@@ -120,7 +112,7 @@ const PhotosUpload = {
 
         photoDiv.remove()
     },
-    // remove no front e back - momento da edição do produto
+    // remove on front and back - update time
     removeOldPhoto(event) {
         const photoDiv = event.target.parentNode
 
@@ -131,8 +123,6 @@ const PhotosUpload = {
                 removedFiles.value += `${photoDiv.id},`
             }
         }
-
-        // remove image do front
         photoDiv.remove()
     }
 }
