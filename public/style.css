@@ -1,0 +1,271 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,900&display=swap');
+
+:root {
+    --primary-color: #fd951f;
+    --secondary-color: #1f83fd;
+    --button-delete: crimson;
+    --bg1-color: #f9f9f9;
+    --bg2-color: #000000;
+    --color1-font: #ffffff;
+    --color2-font: #777777;
+}
+
+* {
+    margin: 0px;
+    padding: 0;
+    text-decoration: none;
+    list-style-type: none;
+    box-sizing: border-box;
+    border: none;
+}
+
+html,body {
+    min-height: 100vh;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+}
+
+.container {
+    width: 90%;
+    max-width: 940px;
+    margin: 0 auto;
+}
+
+.button {
+    background-color: var(--primary-color);
+    color: var(--color1-font);
+    display: block;
+    margin: 16px 0;
+    padding: 12px 16px;
+    width: 100%;
+    border-radius: 4px;
+    /* quando estiver em um grid, vai alinhar em baixo */
+    align-self: end;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.button.edit {
+    background-color: var(--secondary-color);
+}
+
+.button.delete {
+    background-color: lightgray;
+}
+
+.button.edit:hover {
+    filter: brightness(90%);
+}
+.button.delete:hover {
+    background-color: var(--button-delete); 
+}
+
+/* header */
+header, footer {
+    background-color: var(--bg2-color);
+    color: var(--color1-font);
+    width: 100%;
+    padding: 32px 0;
+    text-align: center;
+}
+
+header div.container {
+    display: grid;
+    grid-template-columns: 220px 1fr 280px;
+    align-items: center;
+    gap: 24px;
+}
+
+header div.container a {
+    justify-self: start;
+}
+
+/* logo */
+.logo h1 {
+    color: var(--color1-font);
+    font-size: 36px;
+    line-height: 46px;
+}
+
+.logo h2 {
+    text-transform: uppercase;
+    color: var(--primary-color);
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 2px;
+}
+
+/* header search */
+.search input {
+    width: 100%;
+    padding: 8px 16px;
+    border-radius: 2px;
+    font-size: 16px;
+}
+
+/* primary */
+nav.primary ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+nav.primary ul li a {
+    display: flex;
+    align-items: center;
+    color: var(--color1-font);
+    transition: all 200ms;
+}
+
+nav.primary ul li a:hover {
+    color: var(--primary-color)
+}
+
+nav.primary ul li a i {
+    margin-right: 8px;
+}
+
+/* products form */
+section.form {
+    background-color: var(--color1-font);
+    padding: 32px 24px;
+    margin: 32px auto;
+    box-shadow: 2px 2px 2px -4px rgba(0,0,0,1);
+    border: 2px solid #efefef;
+    border-radius: 4px;
+    max-width: 700px;
+    width: 90%;
+}
+
+section.form .header h3 {
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 16px;
+}
+
+form .fields {
+    margin-bottom: 64px;
+}
+
+form .item {
+    margin-bottom: 16px;
+}
+
+form .item > div:nth-child(1) {
+    color: var(--color2-font);
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+form .item input[type="text"],
+form .item input[type="number"],
+form .item textarea,
+form .item select {
+    width: 100%;
+    padding: 8px 16px;
+    box-shadow: 2px 2px 2px -4px rgba(0,0,0,1);
+    border: 2px solid #efefef;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+form .item textarea {
+    min-height: 150px;
+}
+
+form .item span {
+    padding: 8px 16px;
+    background-color: var(--secondary-color);
+    border-radius: 16px;
+    color: var(--color1-font);
+    margin-right: 4px;
+    margin-top: 8px;
+    display: inline-block;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+/* PHOTOS UPLOAD */
+form .item #photos-upload {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    width: 200px;
+}
+
+form .item #photos-upload p {
+    padding: 8px 16px;
+    border-radius: 4px;
+    box-shadow: 0 2px 2px -6px #333;
+    background-color: var(--secondary-color);
+    color: var(--bg1-color);
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+form .item #photos-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+form .item #photos-preview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    margin: 8px 0;
+}
+
+form .item #photos-preview img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+#photos-preview .photo {
+    position: relative;
+}
+
+#photos-preview .photo i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: red;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 500%;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 200ms;
+}
+
+#photos-preview .photo:hover i {
+    opacity: 1;
+}

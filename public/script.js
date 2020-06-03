@@ -1,0 +1,138 @@
+// criando máscara para real
+// nos inputs html, temos a chamada da função 
+// onkeydown="Mask.apply(this, 'formatBRL')
+
+const Mask = {
+    apply(input, func) {
+        setTimeout(() => {
+            input.value = Mask[func](input.value)        
+        }, 1);
+    },
+
+    formatBRL(value) {
+        value = value.replace(/\D/g,"")
+        return value = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(value / 100)
+    }
+}
+
+// GERENCIADOR DE IMAGENS PARA UPLOAD - limitando a 6 fotos
+const PhotosUpload = {
+    input: '',
+    preview: document.querySelector('#photos-preview'),
+    uploadLimit: 6,
+    files: [],
+
+    handleFileInput(event) {
+        const { files: fileList } = event.target
+        PhotosUpload.input = event.target
+      
+        if(PhotosUpload.hasLimit(event)) return
+
+        Array.from(fileList).forEach(file => {
+
+            PhotosUpload.files.push(file)
+            
+            const reader = new FileReader()
+
+            reader.onload = () => {
+                const image = new Image() // >>>> <img />
+                image.src = String(reader.result)
+
+                const div = PhotosUpload.getContainer(image)
+                PhotosUpload.preview.appendChild(div)
+            }
+
+            // no momento em que esta function estiver encerrada
+            // o reader.onload é executado
+            reader.readAsDataURL(file)
+        })
+
+        PhotosUpload.input.files = PhotosUpload.getAllFiles()
+    },
+
+    hasLimit(event) {
+        // o limite são 6 imagens
+        const { uploadLimit, input, preview } = PhotosUpload
+        const { files: fileList } = input
+
+        // limitação para quando seleciona mais de 6 imgs de uma vez
+        if(fileList.length > uploadLimit) {
+            alert(`Envie no máximo ${uploadLimit} fotos`)
+            event.preventDefault()
+            return true
+        }
+
+        // limitação para quando add imgs e depois e add mais
+        const photosDiv = []
+        preview.childNodes.forEach(item => {
+            if(item.classList && item.classList.value == 'photo') {
+                photosDiv.push(item)
+            }
+        })
+
+        const totalPhotos = fileList.length + photosDiv.length
+        if(totalPhotos > uploadLimit) {
+            alert(`Você está tentando inserir ${totalPhotos} fotos, o máximo são 6!`)
+            event.preventDefault()
+            return true
+        }
+
+        return false
+    },
+
+    getAllFiles() {
+        // ClipboardEvent('') é para o mozilla
+        const dataTransfer = new ClipboardEvent('').clipboardData || new DataTransfer()
+
+        PhotosUpload.files.forEach(file => dataTransfer.items.add(file))
+
+        return dataTransfer.files
+    },
+
+    getContainer(image) {
+        const div = document.createElement('div')
+        div.classList.add('photo')
+        div.onclick = PhotosUpload.removePhoto
+
+        div.appendChild(image)
+        div.appendChild(PhotosUpload.getRemoveButton())
+        return div
+    },
+
+    getRemoveButton() {
+        const button = document.createElement('i')
+        button.classList.add('material-icons')
+        button.innerHTML = 'close'
+        return button
+    },
+    // remove no front - momento da criação do produto
+    removePhoto(event) {
+        const photoDiv = event.target.parentNode // <div class="photo>"
+        const photosArray = Array.from(PhotosUpload.preview.children)
+
+        const index = photosArray.indexOf(photoDiv)
+
+        PhotosUpload.files.splice(index, 1)
+        PhotosUpload.input.files = PhotosUpload.getAllFiles()
+
+        photoDiv.remove()
+    },
+    // remove no front e back - momento da edição do produto
+    removeOldPhoto(event) {
+        const photoDiv = event.target.parentNode
+
+        if(photoDiv.id) {
+            const removedFiles = document.querySelector('input[name="removed_files"]')
+
+            if(removedFiles) {
+                removedFiles.value += `${photoDiv.id},`
+            }
+        }
+
+        // remove image do front
+        photoDiv.remove()
+    }
+}
