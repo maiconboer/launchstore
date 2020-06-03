@@ -16,6 +16,12 @@ module.exports = {
             throw new Error(error)
         }
     },
+    show(req, res) {
+        // const { id } = req.params
+        // let result = await Product.find(id)
+        // return res.render(`/product/${id}`)
+        return res.render('products/show')
+    },
     async post(req, res) {
         // product save logic
         const keys = Object.keys(req.body)
