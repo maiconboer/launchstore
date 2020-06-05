@@ -1,4 +1,4 @@
-const { formatPrice } = require('../../lib/utils')
+const { formatPrice, date } = require('../../lib/utils')
 const Category = require('../models/Category')
 const Product = require('../models/Product')
 const File = require('../models/File')
@@ -16,11 +16,23 @@ module.exports = {
             throw new Error(error)
         }
     },
-    show(req, res) {
-        // const { id } = req.params
-        // let result = await Product.find(id)
-        // return res.render(`/product/${id}`)
-        return res.render('products/show')
+    async show(req, res) {
+        let result = await Product.find(req.params.id)
+        const product = result.rows[0]
+
+        if(!product) return res.send('Product not found!')
+
+        const { day, hour, minutes, month } = date(product.updated_at)
+
+        product.published = {
+            day: `${day}/${month}`,
+            hour: `${hour}h${minutes}`
+        }
+
+        product.oldPrice = formatPrice(product.old_price)
+        product.price = formatPrice(product.price)
+
+        return res.render(`products/show`, { product })
     },
     async post(req, res) {
         // product save logic
