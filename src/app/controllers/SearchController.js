@@ -42,7 +42,12 @@ module.exports = {
                 total: products.length
             }
 
-            return res.render('search/index', { products })
+            const categories = products.map(product => ({
+                id: product.category_id,
+                name: product.category_name
+            }))
+
+            return res.render('search/index', { products, search, categories })
         
        } catch (error) {
            console.log(error);
