@@ -1,4 +1,5 @@
 
+// masks
 const Mask = {
     apply(input, func) {
         setTimeout(() => {
@@ -12,6 +13,55 @@ const Mask = {
             style: 'currency',
             currency: 'BRL'
         }).format(value / 100)
+    },
+
+    cpfCnpj(value) {
+        value = value.replace(/\D/g,"")
+
+        // removing last number
+        if(value.length > 14) value = value.slice(0, -1)
+            
+        
+        // check is cnpj - 11.222.333/4444-55
+        if(value.length > 11) {
+
+            // 11.222333444455
+            value = value.replace(/(\d{2})(\d)/, '$1.$2')
+
+            // 11.222.333444455
+            value = value.replace(/(\d{3})(\d)/, '$1.$2')
+
+            // 11.222.333/444455
+            value = value.replace(/(\d{3})(\d)/, '$1/$2')
+
+            // 11.222.333/4444-55
+            value = value.replace(/(\d{4})(\d)/, '$1-$2')
+            
+        } else { // cpf 
+            // 123.45678900
+            value = value.replace(/(\d{3})(\d)/, '$1.$2')
+
+            // 123.456.78900
+            value = value.replace(/(\d{3})(\d)/, '$1.$2')
+
+            // 123.456.789-00
+            value = value.replace(/(\d{3})(\d)/, '$1-$2')
+        }
+
+        return value
+    },
+
+    cep(value) {
+        // cep - 99999999
+        value = value.replace(/\D/g, '')
+
+        // removing last number
+        if(value.length > 8) value = value.slice(0, -1)
+
+        // 99999-999
+        value = value.replace(/(\d{5})(\d)/, '$1-$2')
+
+        return value
     }
 }
 
@@ -145,6 +195,7 @@ const ImageGallery = {
     },
 }
 
+// lightbox
 const Lightbox = {
     target: document.querySelector('.lightbox-target'),
     image: document.querySelector('.lightbox-target img'),
@@ -165,3 +216,27 @@ const Lightbox = {
     }
 
 }
+
+// validade - email
+const Validade = {
+    apply(input, func) {  
+        let results = Validade[func](input.value) 
+        input.value = results.value
+
+        if(results.error)
+            alert('ERROOUU!!!')
+    },
+
+    isEmail(value) {
+        let error = null
+        
+        // regular expression for e-mail
+        const mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+
+        return {
+            error,
+            value
+        }
+    }
+}
+
