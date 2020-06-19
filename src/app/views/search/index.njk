@@ -13,12 +13,12 @@
         <nav class="categories">
             <h4>Categorias</h4>
             <ul>
-            {% for caterory in categories %}
-            
-                <li><a href="/products/search?filter={{search.  term}}&category={{category.id}}">{{category.name}}</a>
-                </li>
-                
+
+            {% for category in categories %} 
+                <li><a href="/products/search?filter={{search.term}}&category={{category.id}}">{{category.name}}</a>
+                </li>         
             {% endfor %}
+
             </ul>
         </nav>
     </aside>
